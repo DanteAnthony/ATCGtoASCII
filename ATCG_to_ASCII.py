@@ -1,33 +1,28 @@
-string = str(input("ATCG Segment: "))
+def convert_atcg_to_binary(seq: str) -> str:
+    mapping = {
+        'A': '0',
+        'T': '0',
+        'C': '1',
+        'G': '1'
+    }
+    try:
+        return "".join(mapping[nuc] for nuc in seq.upper())
+    except KeyError:
+        raise ValueError("Input string must only contain A, T, C, and G.")
 
-def convert_atcg_to_binary(string):
-    binary_string = ""
-    for char in string:
-        if char == 'A':
-            binary_string += '0'
-        elif char == 'T':
-            binary_string += '0'
-        elif char == 'C':
-            binary_string += '1'
-        elif char == 'G':
-            binary_string += '1'
-        else:
-            raise ValueError("Input string must only contain 'A' 'T' 'C' and 'G' characters")
-    return binary_string
-
-def convert_binary_to_ascii(binary_string):
+def convert_binary_to_ascii(binary_string: str) -> str:
     if len(binary_string) % 8 != 0:
-        raise ValueError("Binary string length must be multiple of 8")
-    
-    ascii_characters = []
-    for i in range(0, len(binary_string), 8):
-        binary_chunk = binary_string[i:i+8]
-        decimal_value = int(binary_chunk, 2)
-        ascii_character = chr(decimal_value)
-        ascii_characters.append(ascii_character)
-    return "".join(ascii_characters)
+        raise ValueError("Binary string length must be a multiple of 8.")
 
-binary_data = convert_atcg_to_binary(string)
-print(binary_data)
+    chars = [
+        chr(int(binary_string[i:i+8], 2))
+        for i in range(0, len(binary_string), 8)
+    ]
+    return "".join(chars)
+
+text = input("ATCG: ").strip()
+
+binary_data = convert_atcg_to_binary(text)
+print(f"Binary: {binary_data}")
 ascii_result = convert_binary_to_ascii(binary_data)
-print(ascii_result)
+print(f"ASCII:  {ascii_result}")
